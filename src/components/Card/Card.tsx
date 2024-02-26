@@ -5,11 +5,15 @@ interface CardProps {
   title: string;
   price: number;
   brand?: string;
+  onClick?: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ id, title, price, brand }) => {
+const Card: React.FC<CardProps> = ({ id, title, price, brand, onClick }) => {
   return (
-    <div className="flex flex-col px-2 py-2 w-[320px] h-[420px] border rounded-xl cursor-pointer">
+    <div
+      className="flex flex-col px-2 py-2 w-[320px] h-[420px] border rounded-xl cursor-pointer"
+      onClick={onClick}
+    >
       <div className="w w-full h-[302px] bg-slate-400 rounded-xl animate-pulse"></div>
       <div className="flex flex-col pl-1 mb-1">
         <div className="mt-3 text-lg">Золотое кольцо с бриллиантами</div>

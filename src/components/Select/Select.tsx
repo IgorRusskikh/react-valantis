@@ -30,7 +30,7 @@ const Select: React.FC<SelectProps> = ({ label, options }) => {
           ${isOpen ? "rotate-180" : "rotate-0"}
         `}
         >
-          <RiArrowDownSLine />
+          <RiArrowDownSLine size={25} />
         </span>
       </div>
       <div
@@ -63,7 +63,8 @@ const Select: React.FC<SelectProps> = ({ label, options }) => {
               cursor-pointer 
               transition-all 
               duration-300 
-            hover:text-red-500 text-lg
+            hover:text-red-500 
+              text-lg
               ${
                 index + 1 === options.length
                   ? "border-none"

@@ -1,7 +1,12 @@
 "use client";
 
+import { HiOutlineMagnifyingGlass } from 'react-icons/hi2';
+
 import CardGrid from '@/components/CardGrid/CardGrid';
+import DetailProduct from '@/components/DetailProduct/DetailProduct';
+import Input from '@/components/Input/Input';
 import Select from '@/components/Select/Select';
+import useDetailProduct from '@/hooks/useDetailProduct';
 
 export default function Home() {
   // useEffect(() => {
@@ -25,10 +30,17 @@ export default function Home() {
   //   getData();
   // }, []);
 
+  const productDetail = useDetailProduct();
+
   return (
     <div>
-      <div className="flex justify-center mt-10">
-        <Select label="Filter" options={["Price", "Price", "Price", "Price"]} />
+      <div className="flex justify-center">
+        {productDetail.isOpen && <DetailProduct />}
+        <Select
+          label="Сортировка"
+          options={["Price", "1Price", "2Price", "3Price"]}
+        />
+        <Input placeholder="Поиск" icon={HiOutlineMagnifyingGlass} />
       </div>
       <div className="flex justify-center w-full px-16 pt-16">
         <CardGrid />
