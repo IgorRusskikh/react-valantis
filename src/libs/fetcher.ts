@@ -1,4 +1,4 @@
-import axios from 'axios';
+import cryptoJS from 'crypto-js';
 
 interface fetcherArgs {
   action: string;
@@ -11,24 +11,27 @@ const fetcher = async ({ action, params }: fetcherArgs) => {
       return null;
     }
 
-    const response = await axios.post(
-      "https://api.valantis.store:41000/",
-      {
+    const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+    const authToken = cryptoJS.MD5(`Valantis_${timestamp}`).toString();
+
+    const response = await fetch("https://api.valantis.store:41000/", {
+      cache: "force-cache",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth": authToken,
+      },
+      body: JSON.stringify({
         action: action,
         params: params,
-      },
-      {
-        headers: {
-          "x-auth": "cd0bfbcb48b87cbb908ce771120bb507",
-        },
-      }
-    );
+      }),
+    });
 
     if (response.status !== 200) {
       return null;
     }
 
-    return response.data;
+    return await response.json();
   } catch (error) {
     console.log(error);
   }

@@ -1,15 +1,77 @@
-import useDetailProduct from '@/hooks/useDetailProduct';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+
+import Loading from '@/app/Loading';
+import useLoading from '@/hooks/useLoading';
+import fetcher from '@/libs/fetcher';
 
 import Card from '../Card/Card';
 
+interface CardProps {
+  id: string;
+  product: string;
+  price: number;
+  brand?: string;
+  onClick?: () => void;
+}
+
 const CardGrid = () => {
-  const detailProductModal = useDetailProduct();
+  const [products, setProducts] = useState<CardProps[]>([]);
+
+  const router = useRouter();
+
+  const loading = useLoading();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const productIds = await fetcher({
+        action: "get_ids",
+        params: { offset: 0, limit: 10 },
+      });
+
+      if (productIds?.result) {
+        const products = await fetcher({
+          action: "get_items",
+          params: {
+            ids: productIds.result,
+          },
+        });
+
+        if (products?.result) {
+          const uniqueProducts = new Map(
+            products.result.map((product) => [product.id, product])
+          );
+
+          const uniqueProductsArray = Array.from(uniqueProducts.values());
+
+          setProducts(uniqueProductsArray);
+          loading.setIsLoading(false);
+        }
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const memoizedData = useMemo(() => products, [products]);
 
   return (
-    <div className="w-full pl-12 pt-5 flex gap-5 flex-wrap">
-      {[1, 2, 3, 4, 5, 6, 7].map((item) => {
-        return <Card key={item} onClick={detailProductModal.onOpen} />;
-      })}
+    <div className="w-full py-5 pb-10 flex gap-5 flex-wrap justify-center">
+      {loading.isLoading ? (
+        <Loading />
+      ) : (
+        memoizedData.map((item) => (
+          <Card
+            id={item.id}
+            title={item.product}
+            price={item.price}
+            key={item.id}
+            onClick={() => {
+              router.push(`/product/${item.id}`);
+            }}
+          />
+        ))
+      )}
     </div>
   );
 };
