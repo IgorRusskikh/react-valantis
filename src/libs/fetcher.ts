@@ -5,6 +5,8 @@ interface fetcherArgs {
   params: {};
 }
 
+const BASE_URL = "https://api.valantis.store:41000/";
+
 const fetcher = async ({ action, params }: fetcherArgs) => {
   try {
     if (!action || !params) {
@@ -14,7 +16,7 @@ const fetcher = async ({ action, params }: fetcherArgs) => {
     const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, "");
     const authToken = cryptoJS.MD5(`Valantis_${timestamp}`).toString();
 
-    const response = await fetch("https://api.valantis.store:41000/", {
+    const response = await fetch(BASE_URL, {
       cache: "force-cache",
       method: "POST",
       headers: {

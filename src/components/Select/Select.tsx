@@ -5,13 +5,14 @@ import { RiArrowDownSLine } from 'react-icons/ri';
 
 interface SelectProps {
   label: string;
-  options: string[];
+  options: any[];
+  onClick?: () => string;
 }
 
-const Select: React.FC<SelectProps> = ({ label, options }) => {
+const Select: React.FC<SelectProps> = ({ label, options, onClick }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const onClick = useCallback(() => {
+  const onOpen = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen]);
 
@@ -19,13 +20,13 @@ const Select: React.FC<SelectProps> = ({ label, options }) => {
     <div className="flex flex-col relative select-none">
       <div
         className="flex w-fit px-3 py-1 text-lg rounded-xl justify-center items-center border border-red-500 cursor-pointer transition-all duration-300 hover:text-red-500"
-        onClick={onClick}
+        onClick={onOpen}
       >
         {label}
         <span
           className={`
           ml-1 
-          transition-transform
+          transition-all
           duration-300
           ${isOpen ? "rotate-180" : "rotate-0"}
         `}
@@ -42,10 +43,10 @@ const Select: React.FC<SelectProps> = ({ label, options }) => {
           flex 
           flex-col
           border 
-          min-w-[95px] 
           px-2 
-          py-2
-          w-fit 
+          py-2 
+          min-w-fit 
+          w-full
           border-red-500 
           rounded-xl 
           gap-3 
@@ -56,23 +57,28 @@ const Select: React.FC<SelectProps> = ({ label, options }) => {
       >
         {options.map((option, index) => (
           <div
-            key={option}
+            key={option.label}
             className={`
               px-1 
-              border-b  
+              border-b
               cursor-pointer 
               transition-all 
               duration-300 
             hover:text-red-500 
-              text-lg
+              text-lg 
+              min-w-max
               ${
                 index + 1 === options.length
                   ? "border-none"
                   : "border-b-red-500"
               }
             `}
+            onClick={() => {
+              onClick(option);
+              onOpen();
+            }}
           >
-            {option}
+            {option.label}
           </div>
         ))}
       </div>
