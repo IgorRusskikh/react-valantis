@@ -1,27 +1,12 @@
+import { FetchParams, Product } from '@/types/customTypes';
+
 import fetcher from './fetcher';
-
-interface FetchParams {
-  action: string;
-  params: {
-    offset: number;
-    limit: number;
-  };
-  cb: (data: Product[]) => void;
-}
-
-interface Product {
-  id: string;
-  product: string;
-  price: number;
-  brand?: string;
-  onClick?: () => void;
-}
 
 // PRODUCT FETCHER
 const fetchProducts = async ({ action, params, cb }: FetchParams) => {
   const productIds = await fetcher({
-    action: "get_ids",
-    params: { offset: 0, limit: 10 },
+    action: action,
+    params: params,
   });
 
   // FETCHING PRODUCTS LIST BY IDS
