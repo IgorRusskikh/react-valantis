@@ -3,11 +3,7 @@
 import { useCallback, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 
-interface SelectProps {
-  label: string;
-  options: any[];
-  onClick?: () => string;
-}
+import { SelectProps } from '@/types/customTypes';
 
 const Select: React.FC<SelectProps> = ({ label, options, onClick }) => {
   const [isOpen, setIsOpen] = useState(false);

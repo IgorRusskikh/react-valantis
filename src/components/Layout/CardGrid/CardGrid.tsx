@@ -1,70 +1,51 @@
 import { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
 
 import Loading from '@/components/Layout/CardGrid/Loading';
-import { useDetailProduct, useFilterByPrice, useSearch, useSorting } from '@/hooks/customHooks';
-import { sortProducts } from '@/libs/checkOptions';
-import fetchProducts from '@/libs/fetchProducts';
+import { useDetailProduct, useSorting } from '@/hooks/customHooks';
+import useFilter from '@/hooks/useFilter';
+import usePagination from '@/hooks/usePagination';
+import { fetchFilteredProducts } from '@/libs/fetchProducts';
 import { Product } from '@/types/customTypes';
 
 import Card from '../Card/Card';
 
 const CardGrid = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [offset, setOffset] = useState(20);
-
-  const [ref, inView] = useInView();
 
   const detailProduct = useDetailProduct();
   const sort = useSorting();
-  const search = useSearch();
-  const filterBy = useFilterByPrice();
+  const pagination = usePagination();
+
+  const filter = useFilter();
 
   useEffect(() => {
-    // FETCHHING PRODUCTS
-    fetchProducts({
-      action: "get_ids",
-      params: { offset: 0, limit: 20 },
+    const fetchOptions = {
+      params: Object.keys(filter.filter).length
+        ? filter.filter
+        : {
+            offset: 0,
+            limit: 51,
+          },
+      offset: 0,
+      limit: 50,
+      isFilter: !filter.filter,
       cb: setProducts,
-    });
-  }, []);
+    };
 
-  // DYNAMIC PRODUCTS DOWNLOADING
-  useEffect(() => {
-    // CHECKING IF BLOCK IN VIEW FIELD
-    if (inView) {
-      // FETCHHING MORE PRODUCTS
-      fetchProducts({
-        action: "get_ids",
-        params: { offset: offset, limit: 20 },
-        cb: (newProducts) => {
-          setProducts(
-            sortProducts({
-              products: [...products, ...newProducts],
-              sort: sort.sortBy.value,
-            })
-          );
-        },
-      });
-
-      // SETTING OFFSET
-      setOffset(offset + 20);
-    }
-  }, [inView]);
+    fetchFilteredProducts(fetchOptions);
+  }, [pagination.page]);
 
   useEffect(() => {
-    console.log(sortProducts({ products: products, sort: sort.sortBy.value }));
-  }, [sort.sortBy]);
-
-  useEffect(() => {
-    fetchProducts({
-      action: "filter",
-      params: { price: Number.parseInt(filterBy.query) },
+    const fetchOptions = {
+      params: filter.filter,
+      offset: 0,
+      limit: 50,
+      isFilter: true,
       cb: setProducts,
-    });
+    };
 
-    console.log(filterBy.query);
-  }, [filterBy.query]);
+    fetchFilteredProducts(fetchOptions);
+  }, [filter.filter]);
 
   return (
     <>
@@ -89,16 +70,6 @@ const CardGrid = () => {
         ) : (
           <Loading />
         )}
-      </div>
-      <div ref={ref} className="flex flex-col gap-2 mb-5 animate-spin">
-        <div className="flex gap-2">
-          <div className="w-[10px] h-[10px] rounded-full bg-red-500"></div>
-          <div className="w-[10px] h-[10px] rounded-full bg-red-500"></div>
-        </div>
-        <div className="flex gap-2">
-          <div className="w-[10px] h-[10px] rounded-full bg-red-500"></div>
-          <div className="w-[10px] h-[10px] rounded-full bg-red-500"></div>
-        </div>
       </div>
     </>
   );

@@ -2,6 +2,7 @@
 
 import CardGrid from '@/components/Layout/CardGrid/CardGrid';
 import OptionsPanel from '@/components/Layout/OptionsPanel/OptionsPanel';
+import Pagination from '@/components/Layout/Pagination/Pagination';
 import useDetailProduct from '@/hooks/useDetailProduct';
 
 import DetailProduct from './product/[productId]/page';
@@ -30,6 +31,9 @@ export default function Home() {
       </div>
       <div className="flex flex-col justify-center items-center w-full px-16 pt-10 overflow-y-hidden">
         <CardGrid />
+      </div>
+      <div className="w-full flex justify-center mb-10">
+        <Pagination />
       </div>
     </div>
   );

@@ -1,15 +1,8 @@
+import { FetchProductParams } from '@/types/customTypes';
+
 import fetcher from './fetcher';
 
-interface FetcherParams {
-  productId: string | string[];
-  cb: (productId: {
-    title: string;
-    price: number;
-    brand: null | string;
-  }) => void;
-}
-
-const fetchProduct = async ({ productId, cb }: FetcherParams) => {
+const fetchProduct = async ({ productId, cb }: FetchProductParams) => {
   const fetchedProduct = await fetcher({
     action: "get_items",
     params: {

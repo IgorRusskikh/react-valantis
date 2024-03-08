@@ -1,14 +1,4 @@
-import { IconType } from 'react-icons';
-
-interface InputProps {
-  placeholder?: string;
-  type?: string;
-  icon?: IconType;
-  label?: string;
-  value: string;
-  onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
-}
+import { InputProps } from '@/types/customTypes';
 
 const Input: React.FC<InputProps> = ({
   placeholder = "",

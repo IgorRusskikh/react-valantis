@@ -2,18 +2,18 @@ import { useState } from 'react';
 import { CiFilter } from 'react-icons/ci';
 import { HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 
-import { useFilterByPrice, useSearch, useSorting } from '@/hooks/customHooks';
+import { useSorting } from '@/hooks/customHooks';
+import useFilter from '@/hooks/useFilter';
 
 import Input from '../../Input/Input';
 import Select from '../../Select/Select';
 
 const OptionsPanel = () => {
-  const [searchInput, setSearchInput] = useState("");
-  const [filterInput, setFilterInput] = useState("");
+  const [titleFilter, setTitleFilter] = useState("");
+  const [priceFilter, setPriceFilter] = useState("");
 
   const sort = useSorting();
-  const filterBy = useFilterByPrice();
-  const search = useSearch();
+  const filter = useFilter();
 
   return (
     <div className="flex justify-between mx-28 px-10 py-5 border rounded-xl mt-10 shadow-lg">
@@ -41,12 +41,12 @@ const OptionsPanel = () => {
           <Input
             placeholder="25 000P"
             icon={CiFilter}
-            value={filterInput}
+            value={priceFilter}
             onChange={(evt) => {
-              setFilterInput(evt.target.value);
+              setPriceFilter(evt.target.value);
             }}
             onClick={() => {
-              filterBy.setQuery(filterInput);
+              filter.setFilter({ price: Number.parseFloat(priceFilter) });
             }}
           />
         </div>
@@ -54,11 +54,11 @@ const OptionsPanel = () => {
       <Input
         placeholder="Поиск"
         icon={HiOutlineMagnifyingGlass}
-        value={searchInput}
+        value={titleFilter}
         onChange={(evt) => {
-          setSearchInput(evt.target.value);
+          setTitleFilter(evt.target.value);
         }}
-        onClick={() => search.setQuery(searchInput)}
+        onClick={() => filter.setFilter({ product: titleFilter })}
       />
     </div>
   );

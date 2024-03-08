@@ -1,16 +1,22 @@
-import { FetchParams, Product } from '@/types/customTypes';
+import { FetchFilteredProducts, Product } from '@/types/customTypes';
 
 import fetcher from './fetcher';
 
 // PRODUCT FETCHER
-const fetchProducts = async ({ action, params, cb }: FetchParams) => {
-  const productIds = await fetcher({
-    action: action,
-    params: params,
-  });
 
-  // FETCHING PRODUCTS LIST BY IDS
-  if (productIds?.result) {
+export const fetchFilteredProducts = async ({
+  params,
+  offset = 0,
+  limit = 50,
+  cb,
+  isFilter = false,
+}: FetchFilteredProducts) => {
+  try {
+    const productIds = await fetcher({
+      action: isFilter ? "filter" : "get_ids",
+      params: params,
+    });
+
     const products = await fetcher({
       action: "get_items",
       params: {
@@ -18,7 +24,6 @@ const fetchProducts = async ({ action, params, cb }: FetchParams) => {
       },
     });
 
-    // CREATING ARRAY WITH UNIQUE PRODUCTS
     if (products?.result) {
       const uniqueProducts = new Map<string, Product>(
         products.result.map((product: Product) => [product.id, product])
@@ -26,9 +31,19 @@ const fetchProducts = async ({ action, params, cb }: FetchParams) => {
 
       const uniqueProductsArray = Array.from(uniqueProducts.values());
 
-      cb(uniqueProductsArray);
+      const filteredProducts = uniqueProductsArray.slice(
+        uniqueProductsArray.length > offset ? offset : 0,
+        uniqueProductsArray.length > limit ? limit : uniqueProductsArray.length
+      );
+
+      console.log(filteredProducts);
+
+      cb(filteredProducts);
+    } else {
+      throw new Error("Ошибка при получении продуктов");
     }
+  } catch (error) {
+    console.error("Произошла ошибка:", error);
+    return [];
   }
 };
-
-export default fetchProducts;
