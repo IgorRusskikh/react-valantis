@@ -4,6 +4,7 @@ import { CiShoppingCart } from 'react-icons/ci';
 import { IoMdClose } from 'react-icons/io';
 
 import useDetailProduct from '@/hooks/useDetailProduct';
+import { ProductDetail } from '@/types/customTypes';
 
 interface DetailProduct {
   data: {
@@ -14,7 +15,7 @@ interface DetailProduct {
   };
 }
 
-const DetailProduct: React.FC<DetailProduct> = ({
+const DetailProduct: React.FC<ProductDetail> = ({
   data: { id, title, price, brand },
 }) => {
   const detailProduct = useDetailProduct();

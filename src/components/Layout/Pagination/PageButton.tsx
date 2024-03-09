@@ -1,6 +1,7 @@
 import usePagination from '@/hooks/usePagination';
+import { PageButton } from '@/types/customTypes';
 
-const PageButton = ({ page }: { page: number }) => {
+const PageButton: React.FC<PageButton> = ({ page }) => {
   const pagination = usePagination();
 
   return (
@@ -29,7 +30,10 @@ const PageButton = ({ page }: { page: number }) => {
         border-red-500
         ${pagination.page === page && "bg-red-500 text-white"}
       `}
-      onClick={() => pagination.setPage(page)}
+      onClick={() => {
+        pagination.setPage(page)
+        window.scrollTo(0, 0)
+      }}
     >
       {page}
     </div>

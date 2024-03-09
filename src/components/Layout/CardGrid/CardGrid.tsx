@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import Loading from '@/components/Layout/CardGrid/Loading';
-import { useDetailProduct, useSorting } from '@/hooks/customHooks';
-import useFilter from '@/hooks/useFilter';
-import usePagination from '@/hooks/usePagination';
-import { fetchFilteredProducts } from '@/libs/fetchProducts';
+import { useDetailProduct, useFilter, usePagination, useSorting } from '@/hooks/customHooks';
+import fetchFilteredProducts from '@/libs/fetchProducts';
 import { Product } from '@/types/customTypes';
 
 import Card from '../Card/Card';
@@ -23,13 +21,13 @@ const CardGrid = () => {
       params: Object.keys(filter.filter).length
         ? filter.filter
         : {
-            offset: 0,
-            limit: 51,
+            offset: (pagination.page - 1) * 50,
+            limit: 50,
           },
       offset: 0,
       limit: 50,
       isFilter: !filter.filter,
-      cb: setProducts,
+      setProducts: setProducts,
     };
 
     fetchFilteredProducts(fetchOptions);
@@ -38,14 +36,24 @@ const CardGrid = () => {
   useEffect(() => {
     const fetchOptions = {
       params: filter.filter,
-      offset: 0,
+      offset: pagination.page - 1,
       limit: 50,
       isFilter: true,
-      cb: setProducts,
+      setProducts: setProducts,
     };
 
     fetchFilteredProducts(fetchOptions);
   }, [filter.filter]);
+
+  useEffect(() => {
+    if (!pagination.maxPage) {
+      fetchFilteredProducts({
+        params: {},
+        isFilter: false,
+        setMaxPage: pagination.setMaxPage,
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -60,7 +68,7 @@ const CardGrid = () => {
               onClick={() => {
                 detailProduct.setState({
                   id: item.id,
-                  title: item.product,
+                  title: item.product || "",
                   price: item.price,
                 });
                 detailProduct.onOpen();

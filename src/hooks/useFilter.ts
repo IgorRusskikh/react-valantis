@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
-import { FiltersParams } from '@/types/customTypes';
+import { FilterProductsStore } from '@/types/customTypes';
 
-const useFilter = create<FiltersParams>((set) => ({
+const useFilter = create<FilterProductsStore>((set) => ({
   filter: {},
   setFilter: (filter) => set({ filter }),
 }));

@@ -8,8 +8,8 @@ interface PaginationStore {
 }
 
 const usePagination = create<PaginationStore>((set) => ({
-  page: 22,
-  maxPage: 25,
+  page: 1,
+  maxPage: null,
   setPage: (page: number) => set({ page }),
   setMaxPage: (maxPage: number) => set({ maxPage }),
 }));

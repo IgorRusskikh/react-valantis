@@ -1,7 +1,7 @@
-import { SortOptions } from '@/types/customTypes';
+import { SortProducts } from '@/types/customTypes';
 
 // TO SORT PRODUCTS BY ANOTHER VALUE
-export const sortProducts = ({ products, sort }: SortOptions) => {
+export const sortProducts = ({ products, sort }: SortProducts) => {
   if (!sort) {
     return products;
   }

@@ -26,7 +26,7 @@ export default function Home() {
       >
         <DetailProduct data={detailRroduct.state.data} />
       </div>
-      <div>
+      <div id="options-panel">
         <OptionsPanel />
       </div>
       <div className="flex flex-col justify-center items-center w-full px-16 pt-10 overflow-y-hidden">

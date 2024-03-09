@@ -42,7 +42,7 @@ const OptionsPanel = () => {
             placeholder="25 000P"
             icon={CiFilter}
             value={priceFilter}
-            onChange={(evt) => {
+            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
               setPriceFilter(evt.target.value);
             }}
             onClick={() => {
@@ -55,7 +55,7 @@ const OptionsPanel = () => {
         placeholder="Поиск"
         icon={HiOutlineMagnifyingGlass}
         value={titleFilter}
-        onChange={(evt) => {
+        onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           setTitleFilter(evt.target.value);
         }}
         onClick={() => filter.setFilter({ product: titleFilter })}

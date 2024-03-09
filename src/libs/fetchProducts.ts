@@ -4,11 +4,12 @@ import fetcher from './fetcher';
 
 // PRODUCT FETCHER
 
-export const fetchFilteredProducts = async ({
+const fetchFilteredProducts = async ({
   params,
-  offset = 0,
-  limit = 50,
-  cb,
+  offset,
+  limit,
+  setMaxPage,
+  setProducts,
   isFilter = false,
 }: FetchFilteredProducts) => {
   try {
@@ -38,7 +39,16 @@ export const fetchFilteredProducts = async ({
 
       console.log(filteredProducts);
 
-      cb(filteredProducts);
+      const maxPages = Math.ceil(filteredProducts.length);
+
+      if (setMaxPage && filteredProducts.length) {
+        setMaxPage(filteredProducts.length / 50);
+        console.log("1sefsdf: " + filteredProducts.length / 50);
+      }
+
+      if (setProducts) {
+        setProducts(filteredProducts);
+      }
     } else {
       throw new Error("Ошибка при получении продуктов");
     }
@@ -47,3 +57,5 @@ export const fetchFilteredProducts = async ({
     return [];
   }
 };
+
+export default fetchFilteredProducts;

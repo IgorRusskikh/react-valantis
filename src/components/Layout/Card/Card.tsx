@@ -3,15 +3,9 @@
 import Image from 'next/image';
 import { CiShoppingCart } from 'react-icons/ci';
 
-interface CardProps {
-  id: string;
-  title: string;
-  price: number;
-  brand?: string;
-  onClick?: () => void;
-}
+import { ProductCard } from '@/types/customTypes';
 
-const Card: React.FC<CardProps> = ({ id, title, price, brand, onClick }) => {
+const Card: React.FC<ProductCard> = ({ id, title, price, brand, onClick }) => {
   return (
     <div className="flex flex-col px-2 py-2 w-[320px] h-[450px] border rounded-xl select-none shadow-lg">
       {/* CARD IMAGE */}
@@ -21,7 +15,7 @@ const Card: React.FC<CardProps> = ({ id, title, price, brand, onClick }) => {
       >
         <Image
           priority={true}
-          src="/ring.webp"
+          src="/sergi.jpg"
           width={302}
           height={302}
           alt=""
@@ -35,7 +29,7 @@ const Card: React.FC<CardProps> = ({ id, title, price, brand, onClick }) => {
           className="mt-3 text-lg transition-all duration-300 hover:text-red-500 cursor-pointer"
           onClick={onClick}
         >
-          {title.length > 40 ? title.slice(0, 40) + "..." : title}
+          {title && title.length > 40 ? title.slice(0, 40) + "..." : title}
         </div>
         <div className="flex justify-between items-center mt-2">
           {/* PRODUCT PRICE */}

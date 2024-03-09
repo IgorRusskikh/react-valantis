@@ -1,10 +1,10 @@
 import cryptoJS from 'crypto-js';
 
-import { FetcherArgs } from '@/types/customTypes';
+import { Fetcher } from '@/types/customTypes';
 
 const BASE_URL = "https://api.valantis.store:41000/";
 
-const fetcher = async ({ action, params }: FetcherArgs) => {
+const fetcher = async ({ action, params }: Fetcher) => {
   try {
     if (!action || !params) {
       return null;

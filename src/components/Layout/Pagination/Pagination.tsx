@@ -8,8 +8,10 @@ const Pagination = () => {
   const pagination = usePagination();
   const pages = [];
 
-  for (let i = 1; i <= pagination.maxPage; i++) {
-    pages.push(i);
+  if (pagination.maxPage) {
+    for (let i = 1; i <= pagination.maxPage; i++) {
+      pages.push(i);
+    }
   }
 
   return (
@@ -43,7 +45,7 @@ const Pagination = () => {
       {pagination.page + 3 < pages.length && (
         <>
           <div className="text-lg px-3 py-1 mr-1 ml-1">. . .</div>
-          <PageButton page={pagination.maxPage} />
+          <PageButton page={pagination.maxPage || 1} />
           <div>
             <SlArrowRight
               size={20}

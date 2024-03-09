@@ -1,72 +1,52 @@
-import { IconType } from 'react-icons';
-
-export interface Product {
-  id: string;
-  product: string;
-  price: number;
+export interface FetchParams {
+  offset?: number;
+  limit?: number;
+  product?: string;
+  price?: number;
   brand?: string;
-  onClick?: () => void;
+  ids?: string[];
 }
 
-export interface FetcherArgs {
+export interface Fetcher {
   action: string;
-  params: {};
-}
-
-export interface FetchProductParams {
-  productId: string | string[];
-  cb: (productId: {
-    title: string;
-    price: number;
-    brand: null | string;
-  }) => void;
+  params: FetchParams;
 }
 
 export interface FetchFilteredProducts {
+  params: FetchParams;
+  offset: number;
+  limit: number;
+  setMaxPage?: (maxPage: number) => void;
+  setProducts?: (products: Product[]) => void;
   isFilter?: boolean;
-  params: {
-    offset?: number;
-    limit?: number;
-    product?: string | null;
-    price?: number | null;
-    brand?: string | null;
-  };
-  offset?: number;
-  limit?: number;
-  cb: (products: Product[]) => void;
 }
 
-export interface FiltersParams {
-  filter: {
-    product?: string;
-    price?: number;
-    brand?: string;
-  };
-  setFilter: (filter: {}) => void;
+export interface Product {
+  id?: string;
+  product?: string;
+  price?: number;
+  brand?: string;
 }
 
-export interface FilterOptions {
-  products: Product[];
-  filter: string;
+export interface ProductCard extends Product {
+  title?: string;
+  onClick?: () => void;
 }
 
-export interface SortOptions {
+export interface ProductDetail {
+  data: ProductCard;
+}
+
+export interface PageButton {
+  page: number;
+}
+
+export interface SortProducts {
   products: Product[];
   sort: string;
 }
 
-export interface InputProps {
-  placeholder?: string;
-  type?: string;
-  icon?: IconType;
-  label?: string;
-  value: string;
-  onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
-}
-
-export interface SelectProps {
-  label: string;
-  options: any[];
-  onClick?: () => string;
+export interface FilterProductsStore {
+  filter?: Product;
+  setFilter?: (filter: Product) => void;
 }
